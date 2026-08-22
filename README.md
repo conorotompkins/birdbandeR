@@ -1,4 +1,4 @@
-# bird_banding_ui
+# birdbandeR
 A repo for maintaining a front-end data entry and validation system for bird banding.
 
 ## Workflow:
