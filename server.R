@@ -1,6 +1,7 @@
 library(shiny)
 library(tidyverse)
 library(glue)
+library(gt)
 
 server <- function(input, output, session) {
   session_modal <- renderUI({
@@ -68,5 +69,10 @@ server <- function(input, output, session) {
 
   output$header_session_id <- renderText({
     glue("Session {session_data$session_id}")
+  })
+
+  output$banding_data_tbl <- render_gt({
+    banding_data |>
+      gt()
   })
 }
