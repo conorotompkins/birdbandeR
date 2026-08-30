@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(glue)
 
 server <- function(input, output, session) {
   session_modal <- renderUI({
@@ -63,5 +64,9 @@ server <- function(input, output, session) {
     )
 
     x
+  })
+
+  output$header_session_id <- renderText({
+    glue("Session {session_data$session_id}")
   })
 }
