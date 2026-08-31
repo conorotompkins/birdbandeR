@@ -7,9 +7,12 @@ library(reactable)
 
 fake_banding_data <- open_dataset("test_data/banding_data")
 
-fake_session_data <- open_dataset("test_data/session_data")
+fake_session_data <- open_dataset("test_data/session_data") |>
+  arrange(session_start_time)
 
 server <- function(input, output, session) {
+  session_data_reactive <- fetch_session_data(session = session)
+
   session_modal <- renderUI({
     modalDialog(
       title = "Create session",
@@ -49,7 +52,7 @@ server <- function(input, output, session) {
       session_id = session_data$session_id,
       session_start_time = session_data$session_start_time,
       session_location = session_data$session_location,
-      session_nets = session_data$session_nets
+      session_nets = str_c(session_data$session_nets, collapse = ", ")
     )
 
     write_parquet(
@@ -76,7 +79,7 @@ server <- function(input, output, session) {
   )
 
   output$session_data_tbl <- renderReactable({
-    fake_session_data |>
+    session_data_reactive() |>
       collect() |>
       reactable()
   })
