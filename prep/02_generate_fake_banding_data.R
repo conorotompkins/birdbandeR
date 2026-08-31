@@ -2,14 +2,24 @@
 library(tidyverse)
 library(lubridate)
 library(hms)
+library(glue)
+library(arrow)
 
-banding_data <- tibble(
+base_time <- Sys.time()
+
+session <- read_parquet(
+  "test_data/session_data/Hays Woods 2026-08-31.parquet"
+) |>
+  pull(session_id)
+
+fake_banding_data <- tibble(
+  session_id = session,
   net_id = "A",
-  species_code = "INBU",
-  time = as_hms(Sys.time()),
+  species_code = c("INBU", "BCCH", "WTSP"),
+  time = c(base_time, base_time - hours(1), base_time - hours(2)),
   bander = "Christine Best",
   code = "R",
-  band_number = "301025134",
+  band_number = c("301025134", "289014313", "283197805"),
   hp_age = "ASY",
   wrp_age = NA_character_,
   molt_location_1 = "GC 1-6",
@@ -36,3 +46,14 @@ banding_data <- tibble(
   recapture_location = "Hays Woods",
   notes = "Fake data for testing purposes"
 )
+
+paths <- fake_banding_data |>
+  mutate(
+    path = as.character(glue("test_data/banding_data/{band_number}.parquet"))
+  ) |>
+  pull(path)
+
+split_data <- fake_banding_data |>
+  group_split(session_id)
+
+walk2(split_data, paths, write_parquet)
