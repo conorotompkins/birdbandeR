@@ -52,7 +52,7 @@ server <- function(input, output, session) {
       session_id = session_data$session_id,
       session_start_time = session_data$session_start_time,
       session_location = session_data$session_location,
-      session_nets = session_data$session_nets
+      session_nets = str_c(session_data$session_nets, collapse = ", ")
     )
 
     write_parquet(
