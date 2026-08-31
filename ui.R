@@ -2,6 +2,7 @@ library(shiny)
 library(bslib)
 library(bsicons)
 library(gt)
+library(reactable)
 
 ui <- page_navbar(
   title = "Bird Lab Data Entry",
@@ -11,11 +12,11 @@ ui <- page_navbar(
   navset_tab(
     nav_panel(
       title = "Session data",
-      tableOutput("session_data_tbl")
+      reactableOutput("session_data_tbl")
     ),
     nav_panel(
       title = "Banding data",
-      gt_output("banding_data_tbl")
+      reactableOutput("banding_data_tbl")
     ),
     nav_spacer(),
     nav_item(textOutput("header_session_id")),

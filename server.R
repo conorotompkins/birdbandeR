@@ -1,13 +1,19 @@
 library(shiny)
 library(tidyverse)
+library(arrow)
 library(glue)
 library(gt)
+library(reactable)
+
+fake_banding_data <- open_dataset("test_data/banding_data")
+
+fake_session_data <- open_dataset("test_data/session_data")
 
 server <- function(input, output, session) {
   session_modal <- renderUI({
     modalDialog(
       title = "Create session",
-      textInput(inputId = "session_id", label = "Name"),
+      textInput(inputId = "session_id", label = "Name", value = "Test session"),
       textInput(
         inputId = "session_start_time",
         label = "Start time",
@@ -22,6 +28,7 @@ server <- function(input, output, session) {
         inputId = "session_nets",
         label = "Nets",
         choices = c("A", "B", "C"),
+        selected = "A",
         multiple = TRUE
       ),
       footer = actionButton(inputId = "create_session", label = "OK")
@@ -34,9 +41,21 @@ server <- function(input, output, session) {
 
   observeEvent(input$create_session, {
     session_data$session_id <- input$session_id
-    session_data$session_start_time <- input$session_start_time
+    session_data$session_start_time <- ymd_hms(input$session_start_time)
     session_data$session_location <- input$session_location
     session_data$session_nets <- input$session_nets
+
+    new_session_df <- tibble(
+      session_id = session_data$session_id,
+      session_start_time = session_data$session_start_time,
+      session_location = session_data$session_location,
+      session_nets = session_data$session_nets
+    )
+
+    write_parquet(
+      new_session_df,
+      glue("test_data/session_data/{session_data$session_id}.parquet")
+    )
 
     removeModal()
   })
@@ -56,23 +75,19 @@ server <- function(input, output, session) {
     session_nets = NA
   )
 
-  output$session_data_tbl <- renderTable({
-    x <- tibble(
-      session_id = session_data$session_id,
-      session_start_time = session_data$session_start_time,
-      session_location = session_data$session_location,
-      session_nets = str_c(session_data$session_nets, collapse = ", ")
-    )
-
-    x
+  output$session_data_tbl <- renderReactable({
+    fake_session_data |>
+      collect() |>
+      reactable()
   })
 
   output$header_session_id <- renderText({
     glue("Session {session_data$session_id}")
   })
 
-  output$banding_data_tbl <- render_gt({
-    banding_data |>
-      gt()
+  output$banding_data_tbl <- renderReactable({
+    fake_banding_data |>
+      collect() |>
+      reactable()
   })
 }
