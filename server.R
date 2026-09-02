@@ -34,7 +34,9 @@ server <- function(input, output, session) {
         selected = "A",
         multiple = TRUE
       ),
-      footer = actionButton(inputId = "create_session", label = "OK")
+      actionButton(inputId = "create_session", label = "Create session"),
+      footer = actionButton(inputId = "close_modal", label = "Close"),
+      easyClose = TRUE
     )
   })
 
