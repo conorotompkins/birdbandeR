@@ -19,7 +19,12 @@ ui <- page_navbar(
       reactableOutput("banding_data_tbl")
     ),
     nav_spacer(),
+    nav_item(
+      actionButton(inputId = "open_session_creator", label = "Create session")
+    ),
+    nav_spacer(),
     nav_item(textOutput("header_session_id")),
+    nav_spacer(),
     nav_item(bs_icon("arrow-repeat"))
   )
 )
