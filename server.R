@@ -44,6 +44,10 @@ server <- function(input, output, session) {
     showModal(session_modal)
   })
 
+  observeEvent(input$open_session_creator, {
+    showModal(session_modal)
+  })
+
   observeEvent(input$create_session, {
     session_data$session_id <- input$session_id
     session_data$session_start_time <- ymd_hms(input$session_start_time)
