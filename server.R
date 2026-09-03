@@ -83,6 +83,7 @@ server <- function(input, output, session) {
   output$session_data_tbl <- renderReactable({
     session_data_reactive() |>
       collect() |>
+      arrange(desc(session_start_time)) |>
       reactable()
   })
 
