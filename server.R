@@ -34,7 +34,9 @@ server <- function(input, output, session) {
         selected = "A",
         multiple = TRUE
       ),
-      footer = actionButton(inputId = "create_session", label = "OK")
+      actionButton(inputId = "create_session", label = "Create session"),
+      footer = modalButton("Close"),
+      easyClose = TRUE
     )
   })
 
@@ -81,6 +83,7 @@ server <- function(input, output, session) {
   output$session_data_tbl <- renderReactable({
     session_data_reactive() |>
       collect() |>
+      arrange(desc(session_start_time)) |>
       reactable()
   })
 
