@@ -13,6 +13,17 @@ fake_session_data <- open_dataset("test_data/session_data") |>
 server <- function(input, output, session) {
   session_data_reactive <- fetch_session_data(session = session)
 
+  #set active session to NA
+  active_session <- reactiveVal(NA)
+
+  #create shell for session data
+  session_data <- reactiveValues(
+    session_id = NA,
+    session_start_time = NA,
+    session_location = NA,
+    session_nets = NA
+  )
+
   session_modal <- renderUI({
     modalDialog(
       title = "Create session",
@@ -61,6 +72,8 @@ server <- function(input, output, session) {
       session_nets = str_c(session_data$session_nets, collapse = ", ")
     )
 
+    active_session(input$session_id) #set active session upon creation
+
     write_parquet(
       new_session_df,
       glue("test_data/session_data/{session_data$session_id}.parquet")
@@ -76,13 +89,6 @@ server <- function(input, output, session) {
       value = Sys.time()
     )
   })
-
-  session_data <- reactiveValues(
-    session_id = NA,
-    session_start_time = NA,
-    session_location = NA,
-    session_nets = NA
-  )
 
   output$session_data_tbl <- renderReactable({
     session_data_reactive() |>
