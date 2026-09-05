@@ -11,7 +11,12 @@ fake_session_data <- open_dataset("test_data/session_data") |>
   arrange(session_start_time)
 
 server <- function(input, output, session) {
-  session_data_reactive <- fetch_session_data(session = session)
+  session_data_reader <- fetch_session_data(session = session)
+
+  session_data_reactive <- reactive({
+    session_data_reader() |>
+      arrange(desc(session_start_time))
+  })
 
   #set active session to NA
   active_session <- reactiveVal(NA)
@@ -90,11 +95,24 @@ server <- function(input, output, session) {
     )
   })
 
+  session_data_tbl_selected <- reactive(getReactableState(
+    "session_data_tbl",
+    "selected"
+  ))
+
+  observeEvent(session_data_tbl_selected(), {
+    x <- session_data_reactive() |>
+      collect() |>
+      filter(row_number() == session_data_tbl_selected()) |>
+      pull(session_id)
+
+    active_session(x)
+  })
+
   output$session_data_tbl <- renderReactable({
     session_data_reactive() |>
       collect() |>
-      arrange(desc(session_start_time)) |>
-      reactable()
+      reactable(selection = "single", onClick = "select")
   })
 
   output$header_session_id <- renderText({
