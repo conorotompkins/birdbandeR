@@ -31,7 +31,7 @@ fake_banding_data <- tibble(
   bp = 0,
   cp = 1,
   fat = 2,
-  b_molt = 0,
+  b_molt = "0",
   ff_molt = 0,
   molt_score = NA_integer_,
   wing_chord = 66.0,
