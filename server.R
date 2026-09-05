@@ -5,7 +5,9 @@ library(glue)
 library(gt)
 library(reactable)
 
-fake_banding_data <- open_dataset("test_data/banding_data")
+fake_banding_data <- open_dataset(
+  "test_data/banding_data/samples"
+)
 
 fake_session_data <- open_dataset("test_data/session_data") |>
   arrange(session_start_time)
@@ -120,8 +122,11 @@ server <- function(input, output, session) {
   })
 
   output$banding_data_tbl <- renderReactable({
+    req(active_session())
+
     fake_banding_data |>
       collect() |>
+      filter(session_id == active_session()) |>
       reactable()
   })
 }
