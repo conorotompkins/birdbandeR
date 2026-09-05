@@ -98,7 +98,7 @@ server <- function(input, output, session) {
   })
 
   output$header_session_id <- renderText({
-    glue("Session {session_data$session_id}")
+    glue("Session {active_session()}")
   })
 
   output$banding_data_tbl <- renderReactable({
