@@ -142,9 +142,9 @@ server <- function(input, output, session) {
   observeEvent(input$select_page_1, switch_page(1))
   observeEvent(input$select_page_2, switch_page(2))
 
-  current_tab_r <- reactive(input$wizard_form_tab)
+  # current_tab_r <- reactive(input$wizard_form_tab)
 
-  output$current_tab <- renderText({
-    current_tab_r()
-  })
+  # output$current_tab <- renderText({
+  #   current_tab_r()
+  #})
 }

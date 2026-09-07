@@ -180,15 +180,15 @@ ui <- page_navbar(
               label = "Notes"
             )
           )
-        ),
-        footer = card_footer(
-          actionButton("select_page_1", "Previous"),
-          actionButton("select_page_2", "Next")
         )
+        # footer = card_footer(
+        #   actionButton("select_page_1", "Previous"),
+        #   actionButton("select_page_2", "Next")
+        # )
       )
     ),
     nav_spacer(),
-    nav_item(textOutput("current_tab")),
+    #nav_item(textOutput("current_tab")),
     nav_item(
       actionButton(inputId = "open_session_creator", label = "Create session")
     ),
