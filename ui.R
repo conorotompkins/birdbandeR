@@ -44,7 +44,12 @@ ui <- page_navbar(
               choices = c("NL", "CB")
             ),
             selectInput(inputId = "code", label = "Code", choices = c("R")),
-            textInput(inputId = "band_number", label = "Band #"),
+            textInput(inputId = "band_number", label = "Band #")
+          )
+        ),
+        nav_panel(
+          title = "Page 2",
+          card(
             selectizeInput(
               inputId = "species_code",
               label = "Species",
@@ -131,7 +136,12 @@ ui <- page_navbar(
               inputId = "status",
               label = "Status",
               choices = c(NA, "300")
-            ),
+            )
+          )
+        ),
+        nav_panel(
+          title = "Page 3",
+          card(
             textInput(
               inputId = "recapture_year",
               label = "Recapture year",
@@ -159,17 +169,16 @@ ui <- page_navbar(
             textInput(
               inputId = "recapture_net",
               label = "Recapture net"
-            ),
-            textInput(
-              inputId = "notes",
-              label = "Notes"
             )
           )
         ),
         nav_panel(
-          title = "Page 2",
+          title = "Page 4",
           card(
-            "Form here"
+            textInput(
+              inputId = "notes",
+              label = "Notes"
+            )
           )
         ),
         footer = card_footer(
@@ -179,6 +188,7 @@ ui <- page_navbar(
       )
     ),
     nav_spacer(),
+    nav_item(textOutput("current_tab")),
     nav_item(
       actionButton(inputId = "open_session_creator", label = "Create session")
     ),

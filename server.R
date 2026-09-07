@@ -138,6 +138,13 @@ server <- function(input, output, session) {
     nav_select(id = "wizard_form_tab", selected = paste0("Page ", i))
   }
 
+  #can i manage wizard pages with input$wizard_form_tab?
   observeEvent(input$select_page_1, switch_page(1))
   observeEvent(input$select_page_2, switch_page(2))
+
+  current_tab_r <- reactive(input$wizard_form_tab)
+
+  output$current_tab <- renderText({
+    current_tab_r()
+  })
 }
