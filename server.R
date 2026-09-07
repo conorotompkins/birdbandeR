@@ -5,7 +5,9 @@ library(glue)
 library(gt)
 library(reactable)
 
-fake_banding_data <- open_dataset("test_data/banding_data")
+fake_banding_data <- open_dataset(
+  "test_data/banding_data/samples"
+)
 
 fake_session_data <- open_dataset("test_data/session_data") |>
   arrange(session_start_time)
@@ -120,8 +122,29 @@ server <- function(input, output, session) {
   })
 
   output$banding_data_tbl <- renderReactable({
+    req(active_session())
+
     fake_banding_data |>
       collect() |>
+      filter(session_id == active_session()) |>
       reactable()
   })
+
+  observeEvent(input$open_banding_form, {
+    nav_select(id = "top_level_tabs", "wizard_container_tab")
+  })
+
+  switch_page <- function(i) {
+    nav_select(id = "wizard_form_tab", selected = paste0("Page ", i))
+  }
+
+  #can i manage wizard pages with input$wizard_form_tab?
+  observeEvent(input$select_page_1, switch_page(1))
+  observeEvent(input$select_page_2, switch_page(2))
+
+  # current_tab_r <- reactive(input$wizard_form_tab)
+
+  # output$current_tab <- renderText({
+  #   current_tab_r()
+  #})
 }

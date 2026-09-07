@@ -15,11 +15,11 @@ session <- read_parquet(
 fake_banding_data <- tibble(
   session_id = session,
   net_id = "A",
-  species_code = c("INBU", "BCCH", "WTSP"),
   time = c(base_time, base_time - hours(1), base_time - hours(2)),
   bander = "Christine Best",
   code = "R",
   band_number = c("301025134", "289014313", "283197805"),
+  species_code = c("INBU", "BCCH", "WTSP"),
   hp_age = "ASY",
   wrp_age = NA_character_,
   molt_location_1 = "GC 1-6",
@@ -31,7 +31,7 @@ fake_banding_data <- tibble(
   bp = 0,
   cp = 1,
   fat = 2,
-  b_molt = 0,
+  b_molt = "0",
   ff_molt = 0,
   molt_score = NA_integer_,
   wing_chord = 66.0,
@@ -42,8 +42,8 @@ fake_banding_data <- tibble(
   recapture_month = month(Sys.Date(), label = TRUE, abbr = FALSE),
   recapture_day = mday(Sys.Date()),
   recapture_time = as_hms(Sys.time() - days(30)),
-  recapture_net = "A",
   recapture_location = "Hays Woods",
+  recapture_net = "A",
   notes = "Fake data for testing purposes"
 )
 
