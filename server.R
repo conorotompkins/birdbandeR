@@ -129,4 +129,12 @@ server <- function(input, output, session) {
       filter(session_id == active_session()) |>
       reactable()
   })
+
+  # switch_page <- function(i) {
+  #   print(paste0("page_", i))
+  #   nav_select(id = "wizard", selected = paste0("page_", i))
+  # }
+
+  # observeEvent(input$select_page_1, switch_page(2))
+  # observeEvent(input$select_page_2, switch_page(1))
 }
