@@ -11,23 +11,26 @@ ui <- page_navbar(
   sidebar = NULL,
 
   navset_tab(
+    id = "top_level_tabs",
     nav_panel(
       title = "Session data",
+      id = "session_data_tab",
       reactableOutput("session_data_tbl")
     ),
     nav_panel(
       title = "Banding data",
+      id = "banding_data_tab",
       reactableOutput("banding_data_tbl")
     ),
     ### banding form wizard
     nav_panel(
       title = "Wizard",
+      value = "wizard_container_tab",
       navset_tab(
-        id = "wizard",
+        id = "wizard_form_tab",
         nav_panel(
           #arrange into columns
-          id = "page_1",
-          "Page 1",
+          title = "Page 1",
           card(
             selectInput(
               inputId = "net_id",
@@ -161,13 +164,15 @@ ui <- page_navbar(
               inputId = "notes",
               label = "Notes"
             ),
-            card_footer(actionButton("select_page_1", "next"))
+            card_footer(actionButton("select_page_2", "Next"))
           )
         ),
         nav_panel(
-          id = "page_2",
-          "Page 2",
-          card("Form here", card_footer(actionButton("select_page_2", "prev")))
+          title = "Page 2",
+          card(
+            "Form here",
+            card_footer(actionButton("select_page_1", "Previous"))
+          )
         )
       )
     ),

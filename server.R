@@ -130,11 +130,14 @@ server <- function(input, output, session) {
       reactable()
   })
 
-  # switch_page <- function(i) {
-  #   print(paste0("page_", i))
-  #   nav_select(id = "wizard", selected = paste0("page_", i))
-  # }
+  observeEvent(input$open_banding_form, {
+    nav_select(id = "top_level_tabs", "wizard_container_tab")
+  })
 
-  # observeEvent(input$select_page_1, switch_page(2))
-  # observeEvent(input$select_page_2, switch_page(1))
+  switch_page <- function(i) {
+    nav_select(id = "wizard_form_tab", selected = paste0("Page ", i))
+  }
+
+  observeEvent(input$select_page_1, switch_page(1))
+  observeEvent(input$select_page_2, switch_page(2))
 }
