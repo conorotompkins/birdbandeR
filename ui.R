@@ -163,16 +163,18 @@ ui <- page_navbar(
             textInput(
               inputId = "notes",
               label = "Notes"
-            ),
-            card_footer(actionButton("select_page_2", "Next"))
+            )
           )
         ),
         nav_panel(
           title = "Page 2",
           card(
-            "Form here",
-            card_footer(actionButton("select_page_1", "Previous"))
+            "Form here"
           )
+        ),
+        footer = card_footer(
+          actionButton("select_page_1", "Previous"),
+          actionButton("select_page_2", "Next")
         )
       )
     ),
